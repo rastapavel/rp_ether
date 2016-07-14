@@ -1,0 +1,25 @@
+def register(key, value):
+    # Key not yet claimed
+    if not self.storage[key]:
+        self.storage[key]=value
+        return(1)
+    else:
+        return(0) # Key already claimed
+
+def ask(key):
+    return(self.storage[key])
+
+#addr is the public key of the party we are sending the money to
+#value is the value of currency we are sending. 
+def transfer(addr, value):
+    #We are going to max out debt at 1000 credits per person
+    if self.storage[msg.sender] - value < -1000:
+        return(-1)
+    else:
+        #If they have not exceeded their debt limit, we do the transaction
+        self.storage[msg.sender] -= value
+        self.storage[addr] += value
+        return(1)
+#Simply return the balance at that address
+def balance(addr):
+    return(self.storage[addr])
