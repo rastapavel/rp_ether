@@ -1,34 +1,30 @@
-# RP modified from https://github.com/mc2-umd/ethereumlab/blob/master/Examples/easy_bank.py
-#data higher_up_key = 23
-#data limit = 100000 #Initial value
-#
-def init():
-	#Initialiaze the contract creator with 10000 fake dollars
-	self.storage[msg.sender] = 10000
-	return(1)
+# RP
 
+# array to hold per account id message sender key, single transaction limit, and balance
+data acct_limits[](sender, single_limit, balance)
 
-def send_currency_to(value, destination):
-	#If the sender has enough money to fund the transaction, complete it
-	if self.storage[msg.sender] >= value:
-		self.storage[msg.sender] = self.storage[msg.sender]  - value
-		self.storage[destination] = self.storage[destination] + value
-		return(1)
-	return(-1)
+# Initialize accounts with limits and starting balance
+def init_limit(id, limit, balance):
+    self.acct_limits[id].sender = msg.sender
+    self.acct_limits[id].single_limit = limit
+    self.acct_limits[id].balance = balance
+    return(1)
 
+# Query acct_limits
+def ask_limit(id):
+    return(self.acct_limits[id].single_limit)
 
-def balance_check(addr):
-	#Balance Check
-	return(self.storage[addr])
+def ask_balance(id):
+    return(self.acct_limits[id].balance)
 
+def ask_sender(id):
+    return(self.acct_limits[id].sender)
 
-def change_limit(new_limit):
-    # Only allow if higher_up is sender
-    if msg.sender == higher_up_key:
-        limit = new_limit
-        return(1)
-    else:
+# Transfer. Actually, just deduct
+def transfer(id, amt):
+    if amt > self.acct_limits[id].single_limit & self.acct_limits[id].balance - amt >= 0:
+        # Could also flag manager that illegal transfer attempted and close account id
         return(-1)
-
-
-
+    else:
+        self.acct_limits[id].balance = self.acct_limits[id].balance - amt
+        return(self.acct_limits[id].balance) # Return remaining balance
