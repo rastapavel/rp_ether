@@ -1,0 +1,91 @@
+# RP modified from https://github.com/mc2-umd/ethereumlab/blob/master/Examples/easy_bank.py
+data higher_up_key # key of authority
+data limit # initial contract limit
+data x#
+
+# Initialize
+#higher_up_key = 0x67656f72676
+limit = 100
+higher_up_key = 745948140856946866108753121277737810491401257713
+#higher_up_key = 0x82a978b3f5962a5b0957d9ee9eef472ee55b42f1L
+#higher_up_key = '\x82\xa9x\xb3\xf5\x96*[\tW\xd9\xee\x9e\xefG.\xe5[B\xf1'
+x = 42
+
+def register(key, value):
+    # Key not yet claimed
+    if not self.storage[key]:
+        self.storage[key] = value
+        return(1)
+    else:
+	    return(0) # Key already claimed
+
+def ask_x():
+    return(self.x)
+
+def ask_x_selfless():
+    return(x)
+
+def ask(key):
+    return(self.storage[key])
+
+def ask_higher_up():
+    return(higher_up_key)
+    #return(76)
+
+# Will only return original value of "limit"
+def ask_limit_selfless():
+    return(limit)
+
+def ask_limit():
+    return(self.limit)
+
+def ask_sender():
+    return(msg.sender)
+
+
+# Interact with contract variables
+def incr_x_wrong():
+    x = x+1
+    return(x)
+
+def incr_x():
+    self.x = self.x + 1
+    return(self.x)
+
+# String comparison in Serpent
+def compare_strings_wrong(in:str):
+    #return(in == 'opensesame')
+    return(in == in)
+
+def compare_strings(in_a:str, in_b:str):
+    #return(in_a)
+    #return(in_b)
+    eq = (in_a == in_b)
+    return(eq)
+
+
+
+# First smart contract
+# What I want to do
+def change_limit(new_limit):
+    # Only allow if higher_up is sender
+    if msg.sender == higher_up_key:
+        self.limit = new_limit
+        return(1)
+    else:
+        return(-1)
+
+# Anyone can change limit
+def change_limit_anyone(new_limit):
+    self.limit = new_limit
+    return(self.limit)
+
+# Slightly less stupid alternative to what I want
+def change_limit_stupid(new_limit, password:str):
+    #if password == password_stupid:
+    if password == "opensesame":
+        self.limit = new_limit
+        self.x = self.x + 1
+        return(1)
+    else:
+        return(-1)
