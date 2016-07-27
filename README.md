@@ -9,3 +9,5 @@ The two short term goals are
 2. Develop python-based blockchain analytics
 
 The current development branch is `rp_fiddle`
+
+I have also started creating my own tutorials as Jupyter Notebooks.
